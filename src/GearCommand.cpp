@@ -1,6 +1,7 @@
 #include "botpch.h"
 
 #include "GearRefresh.h"
+#include "BotManager.h"
 
 #include "ScriptObjects.h"
 #include "Chat/Chat.h"
@@ -34,7 +35,7 @@ namespace ModBotGear
                 ReplyTo(handler, "No such bot.");
                 return;
             }
-            if (!sScriptMgr.IsBotManaged(bot))
+            if (!TortoiseBots::BotManager::Instance().IsBot(bot->GetObjectGuid()))
             {
                 ReplyTo(handler, "That character is not a managed bot.");
                 return;
@@ -96,7 +97,7 @@ namespace ModBotGear
                 // Try the requester's current selection
                 if (requester->GetSelectionGuid())
                     target = sObjectAccessor.FindPlayer(requester->GetSelectionGuid());
-                if (!target || !sScriptMgr.IsBotManaged(target))
+                if (!target || !TortoiseBots::BotManager::Instance().IsBot(target->GetObjectGuid()))
                     target = requester;   // fallback to self if self is a bot
 
                 RefreshOne(target, handler, target ? target->GetName() : "target");
@@ -110,7 +111,7 @@ namespace ModBotGear
                 if (!g)
                 {
                     // No group: try self + target
-                    if (sScriptMgr.IsBotManaged(requester))
+                    if (TortoiseBots::BotManager::Instance().IsBot(requester->GetObjectGuid()))
                         RefreshOne(requester, handler, requester->GetName());
                     else
                         ReplyTo(handler, "Not in a group.");
@@ -122,7 +123,7 @@ namespace ModBotGear
                 {
                     Player* m = itr->getSource();
                     if (!m) continue;
-                    if (!sScriptMgr.IsBotManaged(m)) continue;
+                    if (!TortoiseBots::BotManager::Instance().IsBot(m->GetObjectGuid())) continue;
                     if (GearRefresh::TryRefresh(m, "command", true)) count++;
                 }
                 std::string out = "Re-geared " + std::to_string(count) + " bot(s).";

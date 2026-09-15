@@ -74,7 +74,7 @@ bool IsEligible(Player* bot, bool isManual)
     if (newLevel < g_cfg.minLevel)
         return false;
 
-    if (!sScriptMgr.IsBotManaged(bot))
+    if (!TortoiseBots::BotManager::Instance().IsBot(bot->GetObjectGuid()))
         return false;
 
     // Manual (.bgi) bypasses the automatic toggles and band check —
