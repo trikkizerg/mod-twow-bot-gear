@@ -1,0 +1,15 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.so
+*.gch
+
+# Editor / OS
+*.swp
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
