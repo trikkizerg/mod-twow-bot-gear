@@ -1,0 +1,55 @@
+###################################################################################################
+# mod-twow-bot-gear module configuration
+#
+# Re-gears managed bots when they ding into a new level band.
+# Example with BandSize=5: bots get fresh gear at level 5, 10, 15, 20, 25...
+#
+# The upgrade is incremental (UpgradeGearBest), so earned gear is preserved
+# and only empty or worse slots are filled. Class, spec, armor type, and slot
+# appropriateness are handled inside PlayerbotFactory — this module only
+# decides WHEN, WHICH bots, and at WHAT QUALITY to re-gear.
+###################################################################################################
+
+[ModuleConf]
+
+# Master switch.
+#   0 = disabled
+#   1 = enabled
+mod-twow-bot-gear.Enable = 1
+
+# Re-gear interval. A bot dings into a new band when newLevel % BandSize == 0.
+#   5  = re-gear at 5, 10, 15, 20, 25...
+#   10 = re-gear at 10, 20, 30...
+mod-twow-bot-gear.BandSize = 5
+
+# Don't gear bots below this level. PlayerbotFactory's InitEquipment no-ops
+# below level 5 by default, so 5 is the sensible floor.
+mod-twow-bot-gear.MinLevel = 5
+
+# Quality range for gear at each band. The module picks a random quality in
+# [MinQuality, MaxQuality] per band and applies it to that bot's gear.
+#   0 = factory default (Min/Max ignored when MinQuality == 0)
+#   1 = white (common)
+#   2 = green (uncommon)
+#   3 = blue (rare)
+#   4 = epic
+# If MinQuality == MaxQuality > 0, that exact quality is forced.
+#
+# Example: Min=2, Max=4  ->  each bot's re-gear rolls green/blue/epic.
+mod-twow-bot-gear.MinQuality = 2
+mod-twow-bot-gear.MaxQuality = 4
+
+# Which random (auto-created) bots get re-geared at each band.
+#   0 = skip random bots
+#   1 = re-gear random bots
+mod-twow-bot-gear.RefreshRandomBots = 0
+
+# Which owned bots get re-geared at each band (bots you added via .bot add / roster).
+#   0 = skip owned bots
+#   1 = re-gear owned bots
+mod-twow-bot-gear.RefreshOwnedBots = 0
+
+# Log each re-gear at world level (useful to confirm behavior).
+#   0 = silent
+#   1 = one line per re-gear
+mod-twow-bot-gear.LogGearRefresh = 1
